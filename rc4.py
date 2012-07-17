@@ -2,7 +2,7 @@
 
 """
     Copyright (C) 2012 Bo Zhu http://about.bozhu.me
-    
+
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
     to deal in the Software without restriction, including without limitation
@@ -26,9 +26,7 @@
 def KSA(key):
     keylength = len(key)
 
-    S = []
-    for i in range(256):
-        S.append(i)
+    S = range(256)
 
     j = 0
     for i in range(256):
@@ -56,22 +54,27 @@ def RC4(key):
 
 
 if __name__ == '__main__':
-    key = 'Key'
-    #key = 'Wiki'
-    #key = 'Secret'
     # test vectors are from http://en.wikipedia.org/wiki/RC4
 
-    def convert_key(string):
-        output_list = []
-        for c in string:
-            output_list.append(ord(c))
-        return output_list
+    # ciphertext should be BBF316E8D940AF0AD3
+    key = 'Key'
+    plaintext = 'Plaintext'
 
+    # ciphertext should be 1021BF0420
+    #key = 'Wiki'
+    #plaintext = 'pedia'
+
+    # ciphertext should be 45A01F645FC35B383552544B9BF5
+    #key = 'Secret'
+    #plaintext = 'Attack at dawn'
+
+    def convert_key(s):
+        return [ord(c) for c in s]
     key = convert_key(key)
 
     keystream = RC4(key)
 
     import sys
-    for i in range(10):
-        sys.stdout.write("%02x" % keystream.next())
+    for c in plaintext:
+        sys.stdout.write("%02X" % (ord(c) ^ keystream.next()))
     print
